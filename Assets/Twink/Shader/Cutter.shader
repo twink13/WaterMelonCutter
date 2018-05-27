@@ -3,7 +3,7 @@
 	Properties
 	{
 		_MainTex ("Texture", 2D) = "white" {}
-		_CutSetting ("Cut Setting", Range(-0.1, 0.1)) = 0
+		_CutSetting ("Cut Setting", Range(0, 1)) = 0.5
 
 	}
 	SubShader
