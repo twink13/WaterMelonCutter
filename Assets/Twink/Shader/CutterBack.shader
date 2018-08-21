@@ -40,6 +40,7 @@
 			sampler2D _MainTex;
 			float4 _MainTex_ST;
 			fixed _CutSetting;
+			uniform float4x4 _World2SpliterMatrix;
 			
 			v2f vert (appdata v)
 			{

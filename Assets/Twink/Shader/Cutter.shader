@@ -1,4 +1,4 @@
-﻿Shader "Unlit/Cutter"
+﻿Shader "Twink/Cutter/Cutter"
 {
 	Properties
 	{
@@ -34,19 +34,24 @@
 				UNITY_FOG_COORDS(1)
 				float4 vertex : SV_POSITION;
 				fixed cut : TEXCOORD1;
+				fixed SpliteZ : TEXCOORD2;
 			};
 
 			sampler2D _MainTex;
 			float4 _MainTex_ST;
 			fixed _CutSetting;
+			uniform float4x4 _World2SpliterMatrix;
 			
 			v2f vert (appdata v)
 			{
 				v2f o;
+				float4 worldPos = mul(unity_ObjectToWorld, v.vertex);
 				o.vertex = UnityObjectToClipPos(v.vertex);
 				o.uv = TRANSFORM_TEX(v.uv, _MainTex);
 				UNITY_TRANSFER_FOG(o,o.vertex);
 				o.cut = v.vertex.y;
+				o.SpliteZ = mul(_World2SpliterMatrix, worldPos).z;
+
 				return o;
 			}
 			
@@ -56,8 +61,7 @@
 				fixed4 col = tex2D(_MainTex, i.uv);
 				// apply fog
 				UNITY_APPLY_FOG(i.fogCoord, col);
-				col.a = i.cut;
-				col.a = step(i.cut, _CutSetting);
+				col.a = step(-i.SpliteZ, _CutSetting);
 				return col;
 			}
 			ENDCG
